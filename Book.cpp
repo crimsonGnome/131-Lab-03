@@ -15,7 +15,7 @@
 *******************************************************************************/
 namespace    // unnamed, anonymous namespace
 {
-  // Avoid direct equality comparisons on floating point numbers. Two ````values are equal if they are "close enough", which is
+  // Avoid direct equality comparisons on floating point numbers. Two values are equal if they are "close enough", which is
   // represented by Epsilon.  Usually, this is a pretty small number, but since we are dealing with money (only two, maybe three
   // decimal places) we can be a bit more tolerant.  Two floating point values are considered equal if they are within EPSILON of
   // each other.
