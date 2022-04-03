@@ -5,6 +5,12 @@
   /// Hint:  Include what you use, use what you include
   ///
   /// Do not put anything else in this section, i.e. comments, classes, functions, etc.  Only #include directives
+  #include <cstddef>
+  #include <fstream>
+  #include <string>
+  #include <vector>
+
+  #include "Book.hpp"
 
 /////////////////////// END-TO-DO (1) ////////////////////////////
 
@@ -31,6 +37,14 @@ class BookDatabase
     ///////////////////////// TO-DO (2) //////////////////////////////
       /// Private implementation details
       /// Add any necessary private helper functions, member attributes, etc.
+      
+      // ------ private variables ------
+      
+      std::vector<Book> localDatabase;
 
+      // ------ private functions ------
+
+      // pirvate find decleration 
+      Book * find( const std::string & isbn, size_t index );
     /////////////////////// END-TO-DO (2) ////////////////////////////
 };

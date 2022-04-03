@@ -15,7 +15,7 @@
 *******************************************************************************/
 namespace    // unnamed, anonymous namespace
 {
-  // Avoid direct equality comparisons on floating point numbers. Two values are equal if they are "close enough", which is
+  // Avoid direct equality comparisons on floating point numbers. Two ````values are equal if they are "close enough", which is
   // represented by Epsilon.  Usually, this is a pretty small number, but since we are dealing with money (only two, maybe three
   // decimal places) we can be a bit more tolerant.  Two floating point values are considered equal if they are within EPSILON of
   // each other.
@@ -25,17 +25,9 @@ namespace    // unnamed, anonymous namespace
     ///////////////////////// TO-DO (1) //////////////////////////////
       ///  Write the lines of code that compare two floating point numbers.  Return true when the left hand side (lhs) and the right
       ///  hand side (rhs) are within Epsilon, and false otherwise.
-      /// 
-      ///  See: "Floating point equality" in https://www.learncpp.com/cpp-tutorial/relational-operators-and-floating-point-comparisons/
-      ///
-      ///  Hint:  Avoid writing code that looks like this:
-      ///           if( some expression that is true ) return the constant "true"
-      ///           else                               return the constant "false"
-      ///         for example, avoid:
-      ///           if (a < b) return true;
-      ///           else       return false;
-      ///         do this instead:
-      ///           return a < b;
+      
+      ///  If the absolute value of the difference bwetween the two numbers is less then or equal to Epsilon. They are considered the same;
+      return std::abs(lhs - rhs) < EPSILON;
 
     /////////////////////// END-TO-DO (1) ////////////////////////////
   }
@@ -54,6 +46,12 @@ namespace    // unnamed, anonymous namespace
 // Default and Conversion Constructor
 Book::Book( std::string title,  std::string author,  std::string isbn,  double price )
 ///////////////////////// TO-DO (2) //////////////////////////////
+  // use a member intialization list to create a new object.
+  : _isbn{ std::move( isbn ) },
+    _title{ std::move( title ) },
+    _author{ std::move( author ) },
+    _price{ price }
+{}
 
 /////////////////////// END-TO-DO (2) ////////////////////////////
 
@@ -63,6 +61,9 @@ Book::Book( std::string title,  std::string author,  std::string isbn,  double p
 // Copy constructor
 Book::Book( Book const & other )
 ///////////////////////// TO-DO (3) //////////////////////////////
+// Copy valuess from one object to create another
+
+= default;
 
 /////////////////////// END-TO-DO (3) ////////////////////////////
 
@@ -72,6 +73,10 @@ Book::Book( Book const & other )
 // Move constructor
 Book::Book( Book && other ) noexcept
 ///////////////////////// TO-DO (4) //////////////////////////////
+// using the move constructor is more efficient then copying and deleting.
+// move each value over to the new object.
+// 
+= default;
 
 /////////////////////// END-TO-DO (4) ////////////////////////////
 
@@ -81,7 +86,8 @@ Book::Book( Book && other ) noexcept
 // Copy Assignment Operator
 Book & Book::operator=( Book const & rhs ) &
 ///////////////////////// TO-DO (5) //////////////////////////////
-
+// use the default constructor 
+= default;
 /////////////////////// END-TO-DO (5) ////////////////////////////
 
 
@@ -90,7 +96,8 @@ Book & Book::operator=( Book const & rhs ) &
 // Move Assignment Operator
 Book & Book::operator=( Book && rhs ) & noexcept
 ///////////////////////// TO-DO (6) //////////////////////////////
-
+// use the default constructor 
+= default;
 /////////////////////// END-TO-DO (6) ////////////////////////////
 
 
@@ -98,7 +105,8 @@ Book & Book::operator=( Book && rhs ) & noexcept
 // Destructor
 Book::~Book() noexcept
 ///////////////////////// TO-DO (7) //////////////////////////////
-
+// use the default constructor 
+= default;
 /////////////////////// END-TO-DO (7) ////////////////////////////
 
 
@@ -116,7 +124,7 @@ Book::~Book() noexcept
 std::string const & Book::isbn() const &
 {
   ///////////////////////// TO-DO (8) //////////////////////////////
-
+  return _isbn;
   /////////////////////// END-TO-DO (8) ////////////////////////////
 }
 
@@ -127,7 +135,7 @@ std::string const & Book::isbn() const &
 std::string const & Book::title() const &
 {
   ///////////////////////// TO-DO (9) //////////////////////////////
-
+  return _title;
   /////////////////////// END-TO-DO (9) ////////////////////////////
 }
 
@@ -138,7 +146,7 @@ std::string const & Book::title() const &
 std::string const & Book::author() const &
 {
   ///////////////////////// TO-DO (10) //////////////////////////////
-
+  return _author;
   /////////////////////// END-TO-DO (10) ////////////////////////////
 }
 
@@ -148,7 +156,7 @@ std::string const & Book::author() const &
 double Book::price() const &
 {
   ///////////////////////// TO-DO (11) //////////////////////////////
-
+  return _price;
   /////////////////////// END-TO-DO (11) ////////////////////////////
 }
 
@@ -159,7 +167,7 @@ double Book::price() const &
 std::string Book::isbn() &&
 {
   ///////////////////////// TO-DO (12) //////////////////////////////
-
+  return std::move(_isbn);
   /////////////////////// END-TO-DO (12) ////////////////////////////
 }
 
@@ -170,7 +178,7 @@ std::string Book::isbn() &&
 std::string Book::title() &&
 {
   ///////////////////////// TO-DO (13) //////////////////////////////
-
+  return std::move(_title);
   /////////////////////// END-TO-DO (13) ////////////////////////////
 }
 
@@ -181,7 +189,7 @@ std::string Book::title() &&
 std::string Book::author() &&
 {
   ///////////////////////// TO-DO (14) //////////////////////////////
-
+  return std::move(_author);
   /////////////////////// END-TO-DO (14) ////////////////////////////
 }
 
@@ -200,7 +208,8 @@ std::string Book::author() &&
 Book & Book::isbn( std::string newIsbn ) &
 {
   ///////////////////////// TO-DO (15) //////////////////////////////
-
+  _isbn = std::move (newIsbn );
+  return *this;
   /////////////////////// END-TO-DO (15) ////////////////////////////
 }
 
@@ -211,7 +220,8 @@ Book & Book::isbn( std::string newIsbn ) &
 Book & Book::title( std::string newTitle ) &
 {
   ///////////////////////// TO-DO (16) //////////////////////////////
-
+  _title = std::move ( newTitle );
+  return *this;
   /////////////////////// END-TO-DO (16) ////////////////////////////
 }
 
@@ -222,7 +232,8 @@ Book & Book::title( std::string newTitle ) &
 Book & Book::author( std::string newAuthor ) &
 {
   ///////////////////////// TO-DO (17) //////////////////////////////
-
+  _author = std::move ( newAuthor );
+  return *this;
   /////////////////////// END-TO-DO (17) ////////////////////////////
 }
 
@@ -233,7 +244,8 @@ Book & Book::author( std::string newAuthor ) &
 Book & Book::price( double newPrice ) &
 {
   ///////////////////////// TO-DO (18) //////////////////////////////
-
+  _price = newPrice;
+  return *this;
   /////////////////////// END-TO-DO (18) ////////////////////////////
 }
 
@@ -278,6 +290,16 @@ std::weak_ordering Book::operator<=>( const Book & rhs ) const noexcept
   // (sorted) by ISBN, author, title, then price.
 
   ///////////////////////// TO-DO (19) //////////////////////////////
+  // using the spaceship operator returns -1 if the left is lhs is less then the rhs
+  // it returns the 1 if theg lhs is greater then the rhs
+  // it returns 0 they are equal
+  if( auto result = _isbn <=> rhs._isbn; result != 0 ) return result;
+  if( auto result = _author <=> rhs._author; result != 0 ) return result;
+  if( auto result = _title <=> rhs._title; result != 0 ) return result;
+  if( floating_point_is_equal( _price, rhs._price ) ) return std::weak_ordering::equivalent;
+  if( _price < rhs._price ) return std::weak_ordering::less;
+  else
+    return std::weak_ordering::greater;
 
   /////////////////////// END-TO-DO (19) ////////////////////////////
 }
@@ -292,7 +314,10 @@ bool Book::operator==( const Book & rhs ) const noexcept
   // and then the most likely to be different first.
 
   ///////////////////////// TO-DO (20) //////////////////////////////
-
+  return floating_point_is_equal(_price, rhs._price)
+         && _isbn == rhs._isbn
+         && _title == rhs._title
+         && _author == rhs._author;
   /////////////////////// END-TO-DO (20) ////////////////////////////
 }
 
@@ -328,6 +353,23 @@ std::istream & operator>>( std::istream & stream, Book & book )
     ///        1) https://en.cppreference.com/w/cpp/io/manip/quoted
     ///        2) https://www.youtube.com/watch?v=Mu-GUZuU31A
 
+    Book workingItem;
+    char delimiter = '\0';
+    // stream ignore white space. return quoted data. elimnate white space add , 
+    // repeat for each step
+    if( stream >> std::ws >> std::quoted( workingItem._isbn )   && stream >> std::ws >> delimiter && delimiter == ',' &&
+        stream >> std::ws >> std::quoted( workingItem._title )  && stream >> std::ws >> delimiter && delimiter == ',' &&  
+        stream >> std::ws >> std::quoted( workingItem._author ) && stream >> std::ws >> delimiter && delimiter == ',' &&
+        stream >> std::ws >> workingItem._price )
+    {
+      // move information into book. 
+      book = std::move( workingItem);
+
+    } else {
+      // if something went wrong. Kill stream and dont change 
+      stream.setstate(std::ios::failbit);
+    }
+    return stream;
   /////////////////////// END-TO-DO (21) ////////////////////////////
 }
 
@@ -338,7 +380,17 @@ std::istream & operator>>( std::istream & stream, Book & book )
 std::ostream & operator<<( std::ostream & stream, const Book & book )
 {
   ///////////////////////// TO-DO (22) //////////////////////////////
-    /// This function should be symmetrical with operator>> above.  Read what your write, and write what you read
+  /// This function should be symmetrical with operator>> above.  Read what your write, and write what you read
+  // set delimiter (thing that seperates) to , and white space
+  const std::string delimiter = ", ";
+
+  // stream out the different data values, seperated by delimieter.
+  // then return stream
+  stream << std::quoted( book.isbn() ) << delimiter
+         << std::quoted( book.title() ) << delimiter
+         << std::quoted( book.author() ) << delimiter
+         << book.price();
+  return stream;
 
   /////////////////////// END-TO-DO (22) ////////////////////////////
 }

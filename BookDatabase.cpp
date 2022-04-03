@@ -3,7 +3,14 @@
   /// Hint:  Include what you use, use what you include
   ///
   /// Do not put anything else in this section, i.e. comments, classes, functions, etc.  Only #include directives
+  #include <filesystem>
+  #include <iostream>
+  #include <fstream>
+  #include <string>
+  #include <vector>
 
+  #include "Book.hpp"
+  #include "BookDatabase.hpp"
 /////////////////////// END-TO-DO (1) ////////////////////////////
 
 
@@ -54,7 +61,12 @@ BookDatabase::BookDatabase( const std::string & filename )
   ///////////////////////// TO-DO (2) //////////////////////////////
     /// Hint:  Use your Book's extraction operator to read Books, don't reinvent that here.
     ///        Read books until end of file pushing each book into the data store as they're read.
-
+    // Initialize book data to store book;
+    Book book;
+    // Extract each line to form a book. loop through to the end of the list. 
+    while(fin >> book){
+      localDatabase.push_back(book);
+    }
   /////////////////////// END-TO-DO (2) ////////////////////////////
 
   // Note:  The file is intentionally not explicitly closed.  The file is closed when fin goes out of scope - for whatever
@@ -81,4 +93,25 @@ BookDatabase::BookDatabase( const std::string & filename )
   ///                    depth of recursion may be greater than the program's function call stack size.  But for this programming
   ///                    exercise, getting familiar with recursion is a goal.
 
+  // public definition find
+  Book * BookDatabase::find( const std::string & isbn ){
+      return find(isbn,0 );
+  }
+
+  // private definition of find
+  Book * BookDatabase::find( const std::string & isbn, size_t index ){
+     // Base case
+     if(index == size()) return nullptr;
+
+     // visit if == return that location
+     if(localDatabase[index].isbn() == isbn) return &localDatabase[index];
+
+     // recursive case
+    return find(isbn, ++index);
+  }
+
+  // size function
+  std::size_t BookDatabase::size() const{
+    return localDatabase.size();
+  }
 /////////////////////// END-TO-DO (3) ////////////////////////////

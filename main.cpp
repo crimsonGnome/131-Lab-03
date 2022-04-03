@@ -103,6 +103,32 @@ namespace
     ///////////////////////// TO-DO (1) //////////////////////////////
       /// Implement the algorithm above.
 
+      if(quantity == 1){
+        // copy top broken cart to working cart. 
+        working_cart.push(broken_cart.top());
+       
+        // destroy original
+        broken_cart.pop();
+        
+        // trace
+        trace(broken_cart, working_cart, spare_cart);
+      } else {
+        // note the change in order of the inputs. it will allow the destination of objects being placed into two different piles.
+        // imagine it like a zipper - 2 sides of a jacket being pulled together one tooth followed by the other. 
+        carefully_move_books(quantity -1, broken_cart, spare_cart, working_cart);
+
+        // copy to working cart from broken top
+        working_cart.push(broken_cart.top());
+        
+        // destroy original
+        broken_cart.pop();
+        //trace
+        trace(broken_cart, working_cart, spare_cart);
+
+        //  note the change again
+        carefully_move_books(quantity -1, spare_cart, working_cart, broken_cart);
+        
+      }
     /////////////////////// END-TO-DO (1) ////////////////////////////
   }
 
@@ -117,6 +143,14 @@ namespace
       /// "from" cart.  That is, call the above carefully_move_books function to start moving books recursively.  Call the above
       /// trace function just before calling carefully_move_books to get a starting point reference in the movement report.
 
+      //create sparte cart
+      std::stack<Book> spare_cart;
+
+      // Tracting fucnction before calling recursive
+      trace(from, to, spare_cart);
+      
+      // call recrusive private function
+      carefully_move_books( from.size(), from, to, spare_cart );
     /////////////////////// END-TO-DO (2) ////////////////////////////
   }
 }    // namespace
@@ -131,6 +165,8 @@ int main( int argc, char * argv[] )
   ///////////////////////// TO-DO (3) //////////////////////////////
     /// Create an empty book cart as a stack of books and call it myCart.
 
+    // grab a shabby cart that will break
+    std::stack<Book> myCart;
   /////////////////////// END-TO-DO (3) ////////////////////////////
 
 
@@ -149,6 +185,19 @@ int main( int argc, char * argv[] )
     ///      9780399576775    Eat pray love       Asher
     ///      9780545310581    Hunger Games        any                     <===  heaviest book, put this on the bottom
 
+    // Create Data
+    Book book1("Like the Animals", "mattsanchez28","9780895656926", 32.32);
+    Book book2("131 Answer Key", "blackninja21","54782169785", 32.32);
+    Book book3("Les Mis", "Aquasan","0140444300", 39.99);
+    Book book4("Eat pray love", "Asher","9780399576775", 21.32);
+    Book book5("Hunger Games", "SkyDwagon","9780545310581", 15.00);
+
+    myCart.push(book5);
+    myCart.push(book4);
+    myCart.push(book3);
+    myCart.push(book2);
+    myCart.push(book1);
+
   /////////////////////// END-TO-DO (4) ////////////////////////////
 
 
@@ -158,6 +207,12 @@ int main( int argc, char * argv[] )
   ///////////////////////// TO-DO (5) //////////////////////////////
     /// Create an empty book cart as a stack of books and call it workingCart.  Then carefully move the books in your now broken
     /// cart to this working cart by calling the above carefully_move_books function with two arguments.
+    
+    // Create working cart
+    std::stack<Book> workingCart;
+
+    // cll move books carefully function
+    carefully_move_books(myCart, workingCart);
 
   /////////////////////// END-TO-DO (5) ////////////////////////////
 
@@ -168,6 +223,15 @@ int main( int argc, char * argv[] )
   ///////////////////////// TO-DO (6) //////////////////////////////
     /// Create an empty checkout counter as a queue of books and call it checkoutCounter.  Then remove the books
     /// from your working cart and place them on the checkout counter, i.e., put them in this checkoutCounter queue.
+    
+    // crate queue for books 
+    std::queue<Book> checkoutCounter;
+    
+    // keep looping and taking things out of the cart
+    while(!workingCart.empty()) {
+      checkoutCounter.push(workingCart.top());
+      workingCart.pop();
+    }
 
   /////////////////////// END-TO-DO (6) ////////////////////////////
 
@@ -185,6 +249,26 @@ int main( int argc, char * argv[] )
     /// write the book's full description and price to standard output).  Otherwise, print a message on the receipt that a
     /// description and price for the book wasn't found and there will be no charge.
 
+    while(!checkoutCounter.empty()){
+      // retrieve info
+      Book * bookInfo; 
+      bookInfo = storeDataBase.find(checkoutCounter.front().isbn());
+      
+      if(bookInfo != nullptr){
+        std::cout << "\n \"" << bookInfo->isbn() << "\", \"" << bookInfo->title() << "\", \"" << bookInfo->author() << "\", "
+                  << bookInfo->price();
+
+        // Add the amount up 
+        amountDue += bookInfo->price();
+      } else {
+        std::cout << "\n \"" << checkoutCounter.front().isbn() << "\", (" << checkoutCounter.front().title() 
+                  << ") not found, book is free!";
+      }
+      //remove item from checkout
+      checkoutCounter.pop();
+
+    }
+    
   /////////////////////// END-TO-DO (7) ////////////////////////////
 
 
