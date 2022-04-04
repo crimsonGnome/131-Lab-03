@@ -248,21 +248,23 @@ int main( int argc, char * argv[] )
     /// found in the database then accumulate the amount due and print the book's full description and price on the receipt (i.e.
     /// write the book's full description and price to standard output).  Otherwise, print a message on the receipt that a
     /// description and price for the book wasn't found and there will be no charge.
+    
+    //Create Pointer outside while loop
+    Book * bookInfo;
 
     while(!checkoutCounter.empty()){
       // retrieve info
-      Book * bookInfo; 
       bookInfo = storeDataBase.find(checkoutCounter.front().isbn());
       
       if(bookInfo != nullptr){
-        std::cout << "\n \"" << bookInfo->isbn() << "\", \"" << bookInfo->title() << "\", \"" << bookInfo->author() << "\", "
-                  << bookInfo->price();
+        std::cout << "\"" << bookInfo->isbn() << "\", \"" << bookInfo->title() << "\", \"" << bookInfo->author() << "\", "
+                  << bookInfo->price() << "\n";
 
         // Add the amount up 
         amountDue += bookInfo->price();
       } else {
-        std::cout << "\n \"" << checkoutCounter.front().isbn() << "\", (" << checkoutCounter.front().title() 
-                  << ") not found, book is free!";
+        std::cout << "\"" << checkoutCounter.front().isbn() << "\", (" << checkoutCounter.front().title() 
+                  << ") not found, book is free!\n";
       }
       //remove item from checkout
       checkoutCounter.pop();
